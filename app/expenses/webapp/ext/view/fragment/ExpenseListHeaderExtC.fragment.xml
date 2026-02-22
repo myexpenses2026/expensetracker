@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mc="sap.suite.ui.microchart" xmlns:macros="sap.fe.macros">
+	<HBox id="BudgetKPIHboxC">
+		<HBox id="remainingBudgetKPIHboxC" class="sapUiTinyMarginEnd">
+			<FlexBox id="remainingBudgetKPIFlexBoxC" alignItems="Center" justifyContent="Start" class="sapUiTinyMarginEnd">
+				<Label id="remainingBudgetKPILabelC" text="Remaining in Budget" class="sapUiSmallMarginEnd" />
+				<!--macros:KPITag
+					id="remainingBudgetKPItagC"
+					number="{header>/remaining}"
+					status="Success"
+					unit="AUD"
+				/-->
+				<VBox id="remainingBudgetKPIVBoxC" class="sapUiTinyMarginTop" width="100px">
+				<macros:Field 
+                    id="RemainingKPIC" 
+                    metaPath="/Budgets/@com.sap.vocabularies.UI.v1.DataPoint#Remaining" />
+				</VBox>
+			</FlexBox>
+		</HBox>
+		<HBox id="spendBudgetKPIHBoxC" class="sapUiTinyMarginEnd">
+			<FlexBox id="spentBudgetKPIFlexBoxC" alignItems="Center" justifyContent="Start" class="sapUiTinyMarginEnd">
+				<Label id="spentBudgetKPILabelC" text="Spent from Budget" class="sapUiSmallMarginEnd" />
+				<!--macros:KPITag
+					id="spentBudgetKPITagC"
+					number="{header>/spent}"
+					status="Information"
+					unit="AUD"
+				/-->
+				<VBox id="spendBudgetKPIVBoxC" class="sapUiTinyMarginTop" width="200px">
+					<macros:Field 
+						id="spentKPIC" 
+						metaPath="/Budgets/@com.sap.vocabularies.UI.v1.DataPoint#Spent" />
+				</VBox>
+			</FlexBox>
+		</HBox>
+	</HBox>
+</core:FragmentDefinition>

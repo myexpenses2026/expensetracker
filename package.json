@@ -1,0 +1,75 @@
+{
+  "name": "expensetracker",
+  "version": "1.0.0",
+  "description": "Expense Tracker",
+  "dependencies": {
+    "@sap/cds": "^9",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2",
+    "cds-launchpad-plugin": "^2.2.0",
+    "cds-plugin-ui5": "^0.13.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-expenses": "cds watch --open com.myorg.expense.tracker.expenses/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-budgets": "cds watch --open com.myorg.expense.tracker.budgets/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-budgetfpm": "cds watch --open com.myorg.expense.tracker.budgetfpm/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "[development]": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": ":memory:"
+          }
+        }
+      },
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "Saurav": {
+              "password": "abcd1234",
+              "roles": [
+                "User"
+              ],
+              "attr": {
+                "BudgetID": "b1eb5963-cf9e-4f5a-9366-0d4219468901"
+              }
+            },
+            "Prakash": {
+              "password": "abcd1234",
+              "roles": [
+                "Admin"
+              ],
+              "attr": {
+                "BudgetID": "b1eb5963-cf9e-4f5a-9366-0d4219468901"
+              }
+            },
+            "NoAttribute": {
+              "password": "abcd1234",
+              "roles": [
+                "Admin"
+              ]
+            }
+          }
+        },
+        "[production]": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  },
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/expenses",
+    "app/budgets",
+    "app/budgetfpm"
+  ]
+}

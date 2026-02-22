@@ -1,0 +1,4 @@
+ID,description,type,amount,budget_ID,createdAt,createdBy,modifiedAt,modifiedBy
+e1eb5963-cf9e-4f5a-9366-0d4219469901,Weekly Fruit & Veg,G,50.00,b1eb5963-cf9e-4f5a-9366-0d4219468901,2026-02-01T08:00:00Z,Saurav,2026-02-01T08:00:00Z,Saurav
+e1eb5963-cf9e-4f5a-9366-0d4219469902,Supermarket Run,G,100.00,b1eb5963-cf9e-4f5a-9366-0d4219468901,2026-02-05T17:45:00Z,Saurav,2026-02-05T17:45:00Z,Saurav
+e1eb5963-cf9e-4f5a-9366-0d4219469903,Flight Booking,T,1200.00,b1eb5963-cf9e-4f5a-9366-0d4219468902,2026-01-10T11:20:00Z,Smith,2026-01-10T11:20:00Z,Smith

@@ -1,0 +1,143 @@
+### Variables
+@server = http://localhost:4004
+@auth_admin = Authorization: Basic Prakash:abcd1234
+@auth_user = Authorization: Basic Saurav:abcd1234
+
+@auth_noattr = Authorization: Basic NoAttribute:abcd1234
+
+### 1.0 METADATA: Fetch service definition and structure
+GET {{server}}/ExpenseTracker/$metadata
+{{auth_user}}
+
+### 2.1 INITIAL DATA: Check existing budgets - Admin 
+GET {{server}}/ExpenseTracker/Budgets
+{{auth_admin}}
+
+### 2.2 INITIAL DATA: Check existing budgets - User
+GET {{server}}/ExpenseTracker/Budgets
+{{auth_user}}
+
+### 2.3 INITIAL DATA: Check existing expenses - Admin 
+GET {{server}}/ExpenseTracker/Expenses
+{{auth_admin}}
+
+### 2.4 INITIAL DATA: Check existing expenses - User
+GET {{server}}/ExpenseTracker/Expenses
+{{auth_user}}
+
+### -------------------------------------------------------------------------
+### SCENARIO: CREATE EXPENSE VIA DRAFT (Fiori Lifecycle)
+### -------------------------------------------------------------------------
+
+### 3. Test creation for User with no Attribute
+POST {{server}}/ExpenseTracker/Expenses
+{{auth_noattr}}
+Content-Type: application/json
+
+{ 
+    "IsActiveEntity": false 
+}
+
+### 4. Initialize Draft (Triggers 'NEW' on Expenses.drafts)
+# @name CreateDraft
+POST {{server}}/ExpenseTracker/Expenses
+{{auth_user}}
+Content-Type: application/json
+
+{ 
+    "IsActiveEntity": false 
+}
+
+### 5. Patch Draft with Negative Amount (SHOULD FAIL - Triggers 'PATCH')
+# Uses ID from the previous request
+PATCH {{server}}/ExpenseTracker/Expenses(ID={{CreateDraft.response.body.ID}},IsActiveEntity=false)
+{{auth_user}}
+Content-Type: application/json
+
+{ 
+    "amount": -100.00, 
+    "description": "Invalid Amount Test",
+    "type": "O"
+}
+
+### 6. Patch Draft with Valid Amount (Triggers 'PATCH')
+PATCH {{server}}/ExpenseTracker/Expenses(ID={{CreateDraft.response.body.ID}},IsActiveEntity=false)
+{{auth_user}}
+Content-Type: application/json
+
+{ 
+    "amount": 50.00, 
+    "description": "Valid Office Supplies",
+    "type": "O"
+}
+
+### 7. STEP 4: Activate Draft (Triggers 'SAVE' and Recalculation)
+# @name ActiveExpense
+POST {{server}}/ExpenseTracker/Expenses(ID={{CreateDraft.response.body.ID}},IsActiveEntity=false)/ExpenseTrackerService.draftActivate
+{{auth_user}}
+Content-Type: application/json
+
+{}
+
+### 8. STEP 5: Verify Expenses
+GET {{server}}/ExpenseTracker/Expenses
+{{auth_user}}
+
+### 9. STEP 5: Verify Created Expense
+GET {{server}}/ExpenseTracker/Expenses(ID={{ActiveExpense.response.body.ID}},IsActiveEntity=true)
+{{auth_user}}
+
+### 10. STEP 6: Check Updated Budget
+GET {{server}}/ExpenseTracker/Budgets
+{{auth_user}}
+
+### -------------------------------------------------------------------------
+### SCENARIO: BUDGET OVERRUN CHECK
+### -------------------------------------------------------------------------
+
+### 11. CREATE DRAFT FOR OVERRUN
+# @name OverrunDraft
+POST {{server}}/ExpenseTracker/Expenses
+{{auth_user}}
+Content-Type: application/json
+
+{ 
+    "IsActiveEntity": false 
+}
+
+### 12. PATCH WITH AMOUNT EXCEEDING BUDGET (SHOULD FAIL)
+# Budget b1eb5963... has 500 limit. We try to spend 1000.
+PATCH {{server}}/ExpenseTracker/Expenses(ID={{OverrunDraft.response.body.ID}},IsActiveEntity=false)
+{{auth_user}}
+Content-Type: application/json
+
+{ 
+    "amount": 1000.00, 
+    "description": "Budegt Overrun Test",
+    "type": "O"
+}
+
+
+### -------------------------------------------------------------------------
+### SCENARIO: BOUND ACTION (RESET)
+### -------------------------------------------------------------------------
+
+### 13. RESET AMOUNT ON ACTIVE ENTITY
+# Activate a new Entity in above steps and use it for testing
+POST {{server}}/ExpenseTracker/Expenses(ID={{ActiveExpense.response.body.ID}},IsActiveEntity=true)/ExpenseTrackerService.resetAmount
+{{auth_user}}
+Content-Type: application/json
+
+{}
+
+### 14. STEP 5: Verify Updated Expense
+GET {{server}}/ExpenseTracker/Expenses(ID={{ActiveExpense.response.body.ID}},IsActiveEntity=true)
+{{auth_user}}
+
+### 15. STEP 5: Verify Expenses
+GET {{server}}/ExpenseTracker/Expenses
+{{auth_user}}
+
+### 16. STEP 6: Check Updated Budget
+GET {{server}}/ExpenseTracker/Budgets
+{{auth_user}}

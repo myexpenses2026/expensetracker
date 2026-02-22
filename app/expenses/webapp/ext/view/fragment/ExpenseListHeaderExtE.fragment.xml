@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mc="sap.suite.ui.microchart" xmlns:macros="sap.fe.macros">
+	<HBox id="BudgetKPIHboxE">
+		<HBox id="remainingBudgetKPIHboxE" class="sapUiTinyMarginEnd">
+			<FlexBox id="remainingBudgetKPIFlexBoxE" alignItems="Center" justifyContent="Start" class="sapUiTinyMarginEnd">
+				<Label id="remainingBudgetKPILabelE" text="Remaining Budget" class="sapUiSmallMarginEnd" />
+				<macros:KPITag
+					id="remainingBudgetKPItagE"
+					number="{header>/remaining}"
+					status="Success"
+					unit="AUD"
+				/>
+				<!--macros:Field 
+                    id="RemainingKPI" 
+                    metaPath="/Expenses/@com.sap.vocabularies.UI.v1.DataPoint#RemainingBudget" /-->
+			</FlexBox>
+		</HBox>
+		<HBox id="spendBudgetKPIHBoxE" class="sapUiTinyMarginEnd">
+			<FlexBox id="spentBudgetKPIFlexBoxE" alignItems="Center" justifyContent="Start" class="sapUiTinyMarginEnd">
+				<Label id="spentBudgetKPILabelE" text="Spent Budget" class="sapUiSmallMarginEnd" />
+				<macros:KPITag
+					id="spentBudgetKPITagE"
+					number="{header>/spent}"
+					status="Information"
+					unit="AUD"
+				/>
+			</FlexBox>
+		</HBox>
+	</HBox>
+</core:FragmentDefinition>
