@@ -1,25 +1,96 @@
-# Getting Started
+# 📊 ExpenseTracker — Personal Expense Tracker
 
-Welcome to your new project.
+ExpenseTracker is a sample SAP CAP-based personal expense tracking application.  
+It demonstrates a modular project structure with:
 
-It contains these folders and files, following our recommended project layout:
+- **CAP CDS** domain models  
+- **OData V4 services**  
+- Extendable UI (Fiori Elements)  
+- In-memory / persistent backend  
+- Test suite  
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`package.json` | project metadata and configuration
-`readme.md` | this getting started guide
+This README explains how to get started, build, run, and contribute.
 
+---
 
-## Next Steps
+## Project Structure
 
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
+The repository follows a clean, standard CAP layout:
 
 
-## Learn More
+app/ — Fiori/UI5 front-end (UI content, if added)
+db/ — Domain models and data definitions
+srv/ — Service definitions and custom logic
+test/ — Automated tests
+package.json — Node.js project metadata
+README.md — This file
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+
+Each folder serves a purpose:
+
+- **db/** — CDS models (entities, types, enums)  
+- **srv/** — OData services, business logic handlers  
+- **app/** — UI content (Fiori Elements / custom UI5)  
+- **test/** — Unit and integration tests  
+- **package.json** — Dependencies & scripts  
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Install the following tools if not already installed:
+
+- **Node.js** (≥ 16)
+- **@sap/cds CLI** globally:
+  ```bash
+  npm install -g @sap/cds
+
+Optionally, install the VS Code CAP Extension Pack for better development experience.
+
+### Run Locally
+
+Clone the repository:
+
+git clone https://github.com/myexpenses2026/expensetracker.git
+
+cd expensetracker
+
+Install dependencies:
+
+**npm install**
+
+Start the CAP server in watch mode:
+
+**cds watch**
+
+This runs OData V4 service at /ExpenseTracker/
+
+In-memory SQLite by default (no external DB required)
+
+Open your browser and navigate to:
+
+http://localhost:4004/
+📡 Services
+
+http://localhost:4004/$launchpad CAP Launchpad
+
+The project exposes the following OData service:
+ExpenseTrackerService
+
+Defined in srv/service.cds, it includes:
+
+- Entity	Description
+
+- Budgets	Budget master data
+
+- Expenses	Expense transactions (draft enabled)
+
+- resetAmount (action)	Custom bound action to reset expense amount
+
+The base service path is configured as: /ExpenseTracker/
+
+🧾 License
+
+This project does not currently include a license file — you may want to add one (e.g., MIT, Apache 2.0) to clarify usage rights.
