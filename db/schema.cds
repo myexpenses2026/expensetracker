@@ -1,6 +1,6 @@
 namespace com.myorg.expense.tracker;
 
-using { managed, cuid } from '@sap/cds/common';
+using { managed, cuid, sap.common.CodeList } from '@sap/cds/common';
 
 entity Budgets : managed, cuid {
   name        : String                     @title : 'Budget Description';                   
@@ -21,10 +21,15 @@ type ExpenseType : String enum {
     Other      = 'O' @title: 'Miscellaneous';
 }
 
+entity ExpenseTypes : CodeList {
+  key ID : String(1); // Standard practice to use short codes (F, T, L, etc.)
+}
+
 entity Expenses : managed, cuid {
-  description : String            @title : 'Expenses Description';          
-  type        : ExpenseType       @title : 'Expenses Type';    
-  amount      : Decimal(15, 2)    @title : 'Amount';  
+  description : String                            @title : 'Expenses Description';          
+  type        : Association to ExpenseTypes       @title : 'Expenses Type' ; 
+  //type        : ExpenseType                       @title : 'Expenses Type' ;    
+  amount      : Decimal(15, 2)                    @title : 'Amount';  
 
   //Associations
   budget      : Association to Budgets;

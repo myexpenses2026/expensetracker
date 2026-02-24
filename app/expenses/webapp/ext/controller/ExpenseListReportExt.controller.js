@@ -15,6 +15,7 @@ sap.ui.define([
              */
 			onInit: function () {
 				//you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
+                this._bTableLsitenrAtatched = false;
 			},
 			routing: {
                 /**
@@ -23,6 +24,7 @@ sap.ui.define([
                  */
                 onAfterBinding: function (oBindingContext) {
                     this._updateHeaderStats();
+                    this._attachTableRefreshListener();
                 }
             }
 		},
@@ -31,10 +33,10 @@ sap.ui.define([
             const oView = this.base.getView();
             const oModel = this.base.getExtensionAPI().getModel(); // OData V4 Model
             const oHboxC = oView.byId("BudgetKPIHboxC");
-            
+            const oHboxE = oView.byId("BudgetKPIHboxE");
             // Create a binding to the Budgets collection
             // Since Auth restricts this to 1 record, we just request the first one
-            const oBinding = oModel.bindList("/Budgets", null, null, null, { $select: "spent,remaining,totalBudget,name" });
+            const oBinding = oModel.bindList("/Budgets", null, null, null, { $select: "ID,spent,remaining,totalBudget,name" });
 
             oBinding.requestContexts(0, 1).then(function (aContexts) {
                 if (aContexts && aContexts.length > 0) {
@@ -49,15 +51,32 @@ sap.ui.define([
                         percentage: ((oData.spent / oData.totalBudget) * 100).toFixed(1)
                     };
 
-                    // Set the local model named 'header'
+                    // Set the local model named 'header' for Expanded Box 
                     oView.setModel(new JSONModel(oHeaderData), "header");
-
+                    
                     // Bind the Collpased HBox to reuse the Annotation from UI cds
-                    var sPath = "/Budgets(ID='"+ oData.ID +"')";
+                    var sPath = "/Budgets(ID='"+ oData.ID +"',IsActiveEntity=true)";
                     oHboxC.bindElement({ path: sPath });
+
     
                 }
             }).catch(err => console.error("Budget Load Failed", err));
+        },
+
+        _attachTableRefreshListener: function(){
+            if(TouchList._bTableLsitenrAtatched){ 
+                return 
+            }else{
+                const oView = this.base.getView();
+                const oTable = oView.byId("fe::table::Expenses::LineItem");
+                if(oTable){
+                    const oRowBinding = oTable.getRowBinding ? oTable.getRowBinding() : null;
+                    if(oRowBinding){
+                        oRowBinding.attachDataReceived(this._updatehHeaderStats.bind(this));
+                        this._bTableLsitenrAtatched = true;
+                    }
+                }
+            }
         }
 	});
 });

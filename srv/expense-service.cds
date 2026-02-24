@@ -11,7 +11,7 @@ service ExpenseTrackerService @(path: '/ExpenseTracker') {
     
     actions {
         @Common.IsActionCritical: true
-        // Bound action for the confirmation popup requirement
+        // Bound action Reset Amount
         @Common.SideEffects : { 
             SourceEntities : [ expenses ],
             TargetEntities : [ budget ], 
@@ -19,5 +19,8 @@ service ExpenseTrackerService @(path: '/ExpenseTracker') {
         }
         action resetAmount() returns Expenses;
     };
+
+    @readonly
+    entity ExpenseTypes as projection on db.ExpenseTypes;
 }
 

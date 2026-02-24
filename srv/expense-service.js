@@ -19,7 +19,7 @@ class ExpenseTrackerService extends cds.ApplicationService {
             if (userBudgetID) {
                 // Map the budget_ID in the data payload
                 req.data.budget_ID = userBudgetID;
-                console.log(`✅ Auto-assigned BudgetID ${userBudgetID} to new Expense`);
+                console.log(`Auto-assigned BudgetID ${userBudgetID} to new Expense`);
             } else {
                 // 3. Safety Check: if user has no BudgetID attribute, block the create
                 return req.error(403, 'User profile is missing an assigned Budget ID.');

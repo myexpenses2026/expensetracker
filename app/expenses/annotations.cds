@@ -1,5 +1,5 @@
 using ExpenseTrackerService as service from '../../srv/expense-service';
-annotate service.Expenses with {
+/*annotate service.Expenses with {
     budget @Common.ValueList : {
         $Type : 'Common.ValueListType',
         CollectionPath : 'Budgets',
@@ -27,5 +27,5 @@ annotate service.Expenses with {
             },
         ],
     }
-};
+};*/
 

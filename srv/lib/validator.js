@@ -19,7 +19,7 @@ class ExpenseValidator {
                 .where({ ID: budget_ID })
                 .columns('name', 'spent', 'totalBudget', 'remaining');
 
-            if (ID) {
+            if (budget_ID) {
                 const projectedSpent = Number(budget.spent) + Number(amount);
                 if (projectedSpent > Number(budget.totalBudget)) {
                     req.error(400, `Insufficient funds in "${budget.name}". Remaining: ${budget.remaining}`, 'amount');

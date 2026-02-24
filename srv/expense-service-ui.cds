@@ -1,25 +1,34 @@
 using ExpenseTrackerService from './expense-service';
 
+annotate ExpenseTrackerService.ExpenseTypes with {
+    ID @Common.Text : name @Common.TextArrangement : #TextOnly;
+}
+
+annotate ExpenseTrackerService.Expenses with {
+    type @(
+        Common.Text : type.name, // Shows 'Grocery' instead of 'G'
+        Common.TextArrangement : #TextOnly, 
+    );
+};
+
+
 // Expenses - Transaction App (List Report & Object Page)
 annotate ExpenseTrackerService.Expenses with @(
     UI.HeaderInfo: {
         TypeName: 'Transaction',
         TypeNamePlural: 'Transactions',
         Title: { Value: description },
-        Description: { Value: type }
+        Description: { Value: type_ID }
     },
     
     // Selection Fields allow the user to pick a Budget
-    //UI.SelectionFields: [ budget_ID ],
-
+    UI.SelectionFields: [ type_ID ],
+    
     // Columns in the List Report
     UI.LineItem: [
         { Value: description },
-        { Value: type },
-        { 
-            Value: amount,
-            Criticality: { $edmJson: { $If: [ { $Eq: [ { $Path: 'amount' }, 0 ] }, 0, 3 ] } } 
-        },
+        { Value: type_ID },
+        {  Value: amount },
         { 
             $Type: 'UI.DataFieldForAction', 
             Label: 'Reset Amount', 
@@ -54,7 +63,7 @@ annotate ExpenseTrackerService.Expenses with @(
     UI.FieldGroup #Main: {
         Data: [
             { Value: description },
-            { Value: type },
+            { Value: type_ID },
             { Value: amount },
             { Value: budget_ID, Label: 'Assigned Budget' }
         ]
@@ -76,8 +85,8 @@ annotate ExpenseTrackerService.Expenses with @(
         ]
     },
     Common.SideEffects #UpdateBudgetOnExpenseChange: {
-        SourceEntities  : [ expenses ], // Triggered by changes in the expense list
-        TargetProperties: [ 'spent', 'remaining' ] // Refresh these budget fields
+        SourceEntities  : [ expenses ],            
+        TargetProperties: [ 'spent', 'remaining' ] 
     }
 
 );
