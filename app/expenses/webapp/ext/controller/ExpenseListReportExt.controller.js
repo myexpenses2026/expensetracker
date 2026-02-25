@@ -24,9 +24,18 @@ sap.ui.define([
                  */
                 onAfterBinding: function (oBindingContext) {
                     this._updateHeaderStats();
-                    this._attachTableRefreshListener();
                 }
-            }
+            },
+            editFlow: {
+                onAfterActionExecution: function (mParameters) {
+                    debugger;
+                    // IMPORTANT: Use the fully qualified action name as seen in the $batch request
+                    if (mParameters.includes("resetAmount")) {
+                        // Trigger your header update logic
+                        this._updateHeaderStats();
+                    }
+                }
+            },
 		},
 		
 		_updateHeaderStats: function () {
@@ -61,22 +70,6 @@ sap.ui.define([
     
                 }
             }).catch(err => console.error("Budget Load Failed", err));
-        },
-
-        _attachTableRefreshListener: function(){
-            if(TouchList._bTableLsitenrAtatched){ 
-                return 
-            }else{
-                const oView = this.base.getView();
-                const oTable = oView.byId("fe::table::Expenses::LineItem");
-                if(oTable){
-                    const oRowBinding = oTable.getRowBinding ? oTable.getRowBinding() : null;
-                    if(oRowBinding){
-                        oRowBinding.attachDataReceived(this._updatehHeaderStats.bind(this));
-                        this._bTableLsitenrAtatched = true;
-                    }
-                }
-            }
         }
 	});
 });

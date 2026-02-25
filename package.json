@@ -12,13 +12,18 @@
     "@cap-js/sqlite": "^2",
     "@sap/cds-dk": "^9",
     "cds-launchpad-plugin": "^2.2.0",
-    "cds-plugin-ui5": "^0.13.0"
+    "cds-plugin-ui5": "^0.13.0",
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.29"
   },
   "scripts": {
     "start": "cds-serve",
     "watch-expenses": "cds watch --open com.myorg.expense.tracker.expenses/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-budgets": "cds watch --open com.myorg.expense.tracker.budgets/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-budgetfpm": "cds watch --open com.myorg.expense.tracker.budgetfpm/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-budgetfpm": "cds watch --open com.myorg.expense.tracker.budgetfpm/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy expensetracker --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "cds": {
     "requires": {

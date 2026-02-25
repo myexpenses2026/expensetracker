@@ -13,7 +13,7 @@ service ExpenseTrackerService @(path: '/ExpenseTracker') {
         @Common.IsActionCritical: true
         // Bound action Reset Amount
         @Common.SideEffects : { 
-            SourceEntities : [ expenses ],
+            //SourceEntities : [ expenses ],
             TargetEntities : [ budget ], 
             TargetProperties : [ 'budget/spent', 'budget/remaining' ] 
         }

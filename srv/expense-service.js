@@ -34,14 +34,9 @@ class ExpenseTrackerService extends cds.ApplicationService {
         this.before(['CREATE','UPDATE'], [Budgets,Budgets.drafts], async (req) => {
 
             if (req.data.totalBudget !== undefined) {
-                //console.log("Negative Amount validation started");
+                //console.log("Amount validation started");
                 await Validator.validateBudget(req, { Budgets });
             }
-        });
-
-        // Calaculation: After Save (Activation of Draft)
-        this.after('SAVE', Expenses, async (data) => {
-            await ExpenseCalculator.updateBudget(data.budget_ID, { Expenses, Budgets });
         });
 
         // Bound Action: RESET AMOUNT

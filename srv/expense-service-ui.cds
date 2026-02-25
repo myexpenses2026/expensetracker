@@ -14,6 +14,7 @@ annotate ExpenseTrackerService.Expenses with {
 
 // Expenses - Transaction App (List Report & Object Page)
 annotate ExpenseTrackerService.Expenses with @(
+    UI.DeleteHidden : true,
     UI.HeaderInfo: {
         TypeName: 'Transaction',
         TypeNamePlural: 'Transactions',
