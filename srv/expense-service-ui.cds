@@ -4,12 +4,25 @@ annotate ExpenseTrackerService.ExpenseTypes with {
     ID @Common.Text : name @Common.TextArrangement : #TextOnly;
 }
 
+annotate ExpenseTrackerService.Budgets with {
+    ID @(
+        Common.Text : name, 
+        Common.TextArrangement : #TextOnly, 
+    );
+};
+
 annotate ExpenseTrackerService.Expenses with {
     type @(
         Common.Text : type.name, // Shows 'Grocery' instead of 'G'
         Common.TextArrangement : #TextOnly, 
     );
+
+    budget @(
+        Common.Text : budget.name, 
+        Common.TextArrangement : #TextOnly, 
+    );
 };
+
 
 
 // Expenses - Transaction App (List Report & Object Page)
